@@ -1,4 +1,26 @@
-<p>character-selection works!</p>
-<div *ngFor="let avatar of roster">
-    <img src="{{avatar}}" alt="avatar" >
+<div class="selection">
+    <h2>Character Selection</h2>
+    <div class="player1">
+        <h3>
+            P1: {{player1?.name}}
+        </h3>
+        <img src="{{getPlayer1Profile()}}" alt="no profile available">
+    </div>
+    <div class="player2">
+        <h3>
+            P2: {{player2?.name}}
+        </h3>
+        <img src="{{getPlayer2Profile()}}" alt="no profile available">
+    </div>
+    
+</div>
+
+<div class="roster-box">
+    <div *ngFor="let gc of rosterData" class="roster">
+        <app-avatar [gameCharacter]="gc" (gcEmitter)="viewCharacter($event)" class="app-avatar"></app-avatar>
+    </div>
+</div>
+
+<div class="profile-box">
+    <app-profile [player]="viewingCharacter" (playerEmitter)="selectPlayer($event)" class="app-profile"></app-profile>
 </div>

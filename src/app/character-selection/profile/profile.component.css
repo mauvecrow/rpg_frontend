@@ -1,0 +1,9 @@
+img {
+    height: 600px;
+    object-fit: contain;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}

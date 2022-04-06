@@ -1,8 +1,7 @@
 export interface GameCharacter {
-    name: String,
-    characterClass: String,
+    name: string,
+    characterClass: string,
     avatar: any, // byte[] in java, but unsure for TypeScript + JSON
     profile: any, //same as above
-    stats: {stat: number}
+    stats: {[stat: string]: number}
 }
-

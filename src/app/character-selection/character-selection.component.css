@@ -1,0 +1,13 @@
+.roster {
+    display: inline-block;
+}
+
+.roster-box {
+    width: 60%;
+    display: inline-block;
+}
+
+.character-profile {
+    width: 40%;
+    float: right;
+}

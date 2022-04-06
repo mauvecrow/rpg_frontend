@@ -1,0 +1,12 @@
+<div *ngIf="player" class="profile">
+    <div class="container">
+        <img src="{{imgSource}}" alt="no profile">
+    </div>
+    <div class="player-stats">
+        <ul>
+            <li *ngFor="let stat of statNames">{{stat}}:: {{player.stats[stat]}}</li>
+        </ul>
+    </div>
+    <button (click)="selectPlayer()">Confirm</button>
+</div>
+
