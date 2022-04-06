@@ -2,3 +2,8 @@
 body {
     background-color: #34282C;
 }
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
