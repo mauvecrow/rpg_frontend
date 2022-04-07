@@ -1,26 +1,45 @@
-<div class="selection">
-    <h2>Character Selection</h2>
-    <div class="player1">
-        <h3>
-            P1: {{player1?.name}}
-        </h3>
-        <img src="{{getPlayer1Profile()}}" alt="no profile available">
-    </div>
-    <div class="player2">
-        <h3>
-            P2: {{player2?.name}}
-        </h3>
-        <img src="{{getPlayer2Profile()}}" alt="no profile available">
+<div class="char-selection-grid">
+    <div class="selection-box">
+        <h2>Character Selection</h2>
+        <div class="player1">
+            <h3>
+                P1: {{player1?.name}}
+            </h3>
+            <img *ngIf="player1" src="{{getPlayer1Profile()}}" alt="no profile available">
+        </div>
+        <div class="player2">
+            <h3>
+                P2: {{player2?.name}}
+            </h3>
+            <img *ngIf="player2" src="{{getPlayer2Profile()}}" alt="no profile available">
+        </div>
+        
     </div>
     
-</div>
-
-<div class="roster-box">
-    <div *ngFor="let gc of rosterData" class="roster">
-        <app-avatar [gameCharacter]="gc" (gcEmitter)="viewCharacter($event)" class="app-avatar"></app-avatar>
+    <div class="roster-box">
+        <div *ngFor="let gc of rosterData" class="roster">
+            <app-avatar [gameCharacter]="gc" (gcEmitter)="viewCharacter($event)" class="app-avatar"></app-avatar>
+        </div>
     </div>
-</div>
-
-<div class="profile-box">
-    <app-profile [player]="viewingCharacter" (playerEmitter)="selectPlayer($event)" class="app-profile"></app-profile>
+    
+    <div class="profile-box">
+        <app-profile [player]="viewingCharacter" (playerEmitter)="selectPlayer($event)" class="app-profile"></app-profile>
+    </div>
+    
+    <div class="confirmation-box">
+        <div class="start-check">
+            <div class="start-ready" *ngIf="player1 && player2">
+                <a href="#">Start</a>
+            </div>
+            <div class="start-unready" *ngIf="!(player1 && player2)">
+                <a href="#">Start unready</a>
+            </div>
+        </div>
+        <div>
+            <button (click)="resetSelections()">Reset</button>
+        </div>
+        <div>
+            <a href="#">Cancel</a>
+        </div>
+    </div>
 </div>

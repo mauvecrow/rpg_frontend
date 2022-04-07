@@ -2,12 +2,65 @@
     display: inline-block;
 }
 
-.roster-box {
-    width: 60%;
-    display: inline-block;
+.char-selection-grid {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 35% 35% 30%;
+    grid-template-rows: 55% 30% 15%;
 }
 
-.character-profile {
-    width: 40%;
+.selection-box {
+    grid-area: sel;
+    outline: red 2px solid;
+}
+
+.roster-box {
+    grid-area: ros;
+    outline: blue 2px solid;
+}
+
+.profile-box {
+    grid-area: prf;
+    outline: green 2px solid;
+}
+
+.confirmation-box {
+    grid-area: cfm;
+    outline: yellow 2px solid;
+}
+
+.char-selection-grid {
+    grid-template-areas: 
+    'sel sel prf'
+    'ros ros prf'
+    'cfm cfm prf'
+    ;
+}
+
+
+.selection-box img {
+    height: 350px;
+    object-fit: contain;
+}
+
+.player1, .player2 {
+    width: 50%;
+    float: left;
+}
+
+.player2 h3 {
+    text-align: right;
+}
+
+.player2 img {
     float: right;
+}
+
+.roster-box {
+    margin: 20px auto;
+    padding: 0 10%;
+}
+  
+.roster {
+    margin: 5% 5px;
 }

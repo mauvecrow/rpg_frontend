@@ -1,9 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 body {
     background-color: #34282C;
-}
-
-* {
     margin: 0;
     box-sizing: border-box;
+}
+
+html, body {
+    min-height: 100vh;
+    height: auto
 }

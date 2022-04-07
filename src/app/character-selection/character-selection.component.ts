@@ -13,7 +13,7 @@ export class CharacterSelectionComponent implements OnInit {
 
   rosterData: GameCharacter[] | undefined;
   // roster: string[] = [];
-  viewingCharacter?: GameCharacter | null;
+  viewingCharacter?: GameCharacter;
   player1?: GameCharacter;
   player2?: GameCharacter;
 
@@ -40,7 +40,7 @@ export class CharacterSelectionComponent implements OnInit {
     else {
       this.player2 = selection;
     }
-    this.viewingCharacter = null;
+    this.viewingCharacter = undefined;
   }
 
   getPlayer1Profile() {
@@ -49,6 +49,11 @@ export class CharacterSelectionComponent implements OnInit {
 
   getPlayer2Profile() {
     return this.player2 ? 'data:image/png;base64,' + this.player2.profile : null;
+  }
+
+  resetSelections(){
+    this.player1 = undefined;
+    this.player2 = undefined;
   }
 
 }

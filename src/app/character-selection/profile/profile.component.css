@@ -1,9 +1,10 @@
 img {
     height: 600px;
     object-fit: contain;
+    display: block;
+    margin: 20px auto;
 }
 
-.container {
-    display: flex;
-    justify-content: center;
+.player-stats {
+    text-align: center;
 }
