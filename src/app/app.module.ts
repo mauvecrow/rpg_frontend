@@ -7,6 +7,8 @@ import { CharacterSelectionComponent } from './character-selection/character-sel
 import { WelcomeComponent } from './welcome/welcome.component';
 import { AvatarComponent } from './character-selection/avatar/avatar.component';
 import { ProfileComponent } from './character-selection/profile/profile.component';
+import { BattleComponent } from './battle/battle.component';
+import { VisualsComponent } from './battle/visuals/visuals.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { ProfileComponent } from './character-selection/profile/profile.componen
     WelcomeComponent,
     AvatarComponent,
     ProfileComponent,
+    BattleComponent,
+    VisualsComponent,
   ],
   imports: [
     BrowserModule,
