@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CharactersService } from '../services/characters.service';
 import { GameCharacter } from '../services/game-character';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-character-selection',
@@ -9,7 +10,7 @@ import { GameCharacter } from '../services/game-character';
 })
 export class CharacterSelectionComponent implements OnInit {
 
-  constructor(private charactersService: CharactersService) { }
+  constructor(private charactersService: CharactersService, private router: Router) { }
 
   rosterData: GameCharacter[] | undefined;
   // roster: string[] = [];
@@ -54,6 +55,10 @@ export class CharacterSelectionComponent implements OnInit {
   resetSelections(){
     this.player1 = undefined;
     this.player2 = undefined;
+  }
+
+  startBattle(){
+    this.router.navigate(['battle', {player1: this.player1!.name, player2: this.player2!.name}])
   }
 
 }

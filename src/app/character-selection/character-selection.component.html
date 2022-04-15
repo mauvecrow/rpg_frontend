@@ -29,7 +29,7 @@
     <div class="confirmation-box">
         <div class="start-check">
             <div class="start-ready" *ngIf="player1 && player2">
-                <a href="#">Start</a>
+                <button (click)="startBattle()">Start</button>
             </div>
             <div class="start-unready" *ngIf="!(player1 && player2)">
                 <a href="#">Start unready</a>
