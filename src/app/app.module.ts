@@ -9,6 +9,7 @@ import { AvatarComponent } from './character-selection/avatar/avatar.component';
 import { ProfileComponent } from './character-selection/profile/profile.component';
 import { BattleComponent } from './battle/battle.component';
 import { VisualsComponent } from './battle/visuals/visuals.component';
+import { CommandComponent } from './battle/command/command.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { VisualsComponent } from './battle/visuals/visuals.component';
     ProfileComponent,
     BattleComponent,
     VisualsComponent,
+    CommandComponent,
   ],
   imports: [
     BrowserModule,
