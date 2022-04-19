@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { CharactersService } from '../services/characters.service';
-import { GameCharacter } from '../services/game-character';
 import { GameMeta } from '../services/game-meta';
-import { GameMove } from '../services/game-move';
 
 @Component({
   selector: 'app-battle',

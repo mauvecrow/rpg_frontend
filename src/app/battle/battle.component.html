@@ -1,6 +1,14 @@
 <p>battle works!</p>
 <div *ngIf="meta1 && meta2">
-    <app-visuals [gc1]="meta1.gameCharacter" [gc2]="meta2.gameCharacter"></app-visuals>
+    <div class="grid-container">
+        <div class="visuals">
+            <app-visuals [gc1]="meta1.gameCharacter" [gc2]="meta2.gameCharacter"></app-visuals>
+        </div>
+        <div class="command">
+            <app-command [gameMoves]="meta1.moves"></app-command>
+        </div>
+    </div>
+    
 </div>
 
 
