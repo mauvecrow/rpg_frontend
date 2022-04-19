@@ -1,0 +1,11 @@
+.visuals {
+    background-color: #CDCAA3;
+}
+.profile {
+    float: left;
+}
+
+.profile img {
+    height: 400px;
+    object-fit: contain;
+}

@@ -1,3 +1,19 @@
-<p>visuals works!</p>
-<img [src]="profile1" alt="player 1 avatar">
-<img [src]="profile2" alt="player 2 avatar">
+<div class="visuals">
+    <div class="profile p1">
+        <h2>{{ gc1.name }}</h2>
+        <img [src]="profile1" alt="player 1 avatar">
+        <div class="stat-bars">
+            <h3>Health: {{ gc1.stats['Health']}}</h3>
+            <h3>Energy: {{ gc1.stats['Energy']}}</h3>
+        </div>
+    </div>
+    
+    <div class="profile p2">
+        <h2>{{ gc2.name }}</h2>
+        <img [src]="profile2" alt="player 2 avatar">
+        <div class="stat-bars">
+            <h3>Health: {{ gc2.stats['Health']}}</h3>
+            <h3>Energy: {{ gc2.stats['Energy']}}</h3>
+        </div>
+    </div>
+</div>
