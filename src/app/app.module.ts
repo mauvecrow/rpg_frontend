@@ -10,6 +10,7 @@ import { ProfileComponent } from './character-selection/profile/profile.componen
 import { BattleComponent } from './battle/battle.component';
 import { VisualsComponent } from './battle/visuals/visuals.component';
 import { CommandComponent } from './battle/command/command.component';
+import { AdminDashboardModule } from './admin-dashboard/admin-dashboard.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { CommandComponent } from './battle/command/command.component';
   ],
   imports: [
     BrowserModule,
+    AdminDashboardModule,
     AppRoutingModule,
     HttpClientModule
   ],
