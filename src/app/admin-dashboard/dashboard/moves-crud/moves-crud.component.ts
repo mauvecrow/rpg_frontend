@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { AdminService } from '../../admin-services/admin.service';
-import { MoveEntity } from './move-entity';
+import { MoveEntity } from '../../admin-services/move-entity';
 
 @Component({
   selector: 'app-moves-crud',
