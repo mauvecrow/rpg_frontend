@@ -1,8 +1,9 @@
 <h2>Manage Moves</h2>
 
 <form (ngSubmit)="saveAll()">
+    <button type="button" (click)="toggleCreate()">Create</button>
     <button type="button" (click)="editable = !editable">{{ editable ? 'Cancel' : 'Edit' }}</button>
-    <button type="submit" [disabled]="!editable">Save all</button>
+    <button type="submit" [disabled]="!editable">Save</button>
 
     <table>
         <tr>
@@ -14,17 +15,19 @@
             <th>Limit</th>
             <th>Cost</th>
             <th>Priority</th>
+            <th></th>
         </tr>
         <ng-container *ngIf="!editable">
             <tr *ngFor="let move of moves">
-                <td>{{ move.moveId }}</td>
-                <td>{{ move.moveName }}</td>
-                <td>{{ move.moveCategory }}</td>
-                <td>{{ move.moveType }}</td>
-                <td>{{ move.basePower }}</td>
-                <td>{{ move.moveLimit }}</td>
-                <td>{{ move.cost }}</td>
-                <td>{{ move.priority }}</td>
+                <td>{{ move.moveId }} </td>
+                <td>{{ move.moveName }} </td>
+                <td>{{ move.moveCategory }} </td>
+                <td>{{ move.moveType }} </td>
+                <td>{{ move.basePower }} </td>
+                <td>{{ move.moveLimit }} </td>
+                <td>{{ move.cost }} </td>
+                <td>{{ move.priority }} </td>
+                <td><button type="button" (click)="deleteMove(move.moveId)">Delete</button></td>
             </tr>
         </ng-container>
     </table>
@@ -71,9 +74,78 @@
                     <td>
                         <input type="text" formControlName="priority">
                     </td>
-
                 </tr>
             </ng-container>
         </table>
     </ng-container>
+</form>
+
+<form (ngSubmit)="postMove()" id="createForm" [formGroup]="newMove" style="display: none;">
+    <button type="submit">Submit</button>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Base Power</th>
+            <th>Limit</th>
+            <th>Cost</th>
+            <th>Priority</th>
+            <th>Buff 1</th>
+            <th>Buff Amount</th>
+            <th>Buff 2</th>
+            <th>Buff Amount</th>
+            <th>Debuff 1</th>
+            <th>Debuff Amount</th>
+            <th>Debuff 2</th>
+            <th>Debuff Amount</th>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" formControlName="moveName">
+            </td>
+            <td>
+                <input type="text" formControlName="moveCategory">
+            </td>
+            <td>
+                <input type="text" formControlName="moveType">
+            </td>
+            <td>
+                <input type="text" formControlName="basePower">
+            </td>
+            <td>
+                <input type="text" formControlName="moveLimit">
+            </td>
+            <td>
+                <input type="text" formControlName="cost">
+            </td>
+            <td>
+                <input type="text" formControlName="priority">
+            </td>
+            <td>
+                <input type="text" formControlName="buffStat1">
+            </td>
+            <td>
+                <input type="text" formControlName="buffAmount1">
+            </td>
+            <td>
+                <input type="text" formControlName="buffStat2">
+            </td>
+            <td>
+                <input type="text" formControlName="buffAmount2">
+            </td>
+            <td>
+                <input type="text" formControlName="debuffStat1">
+            </td>
+            <td>
+                <input type="text" formControlName="debuffAmount1">
+            </td>
+            <td>
+                <input type="text" formControlName="debuffStat2">
+            </td>
+            <td>
+                <input type="text" formControlName="debuffAmount2">
+            </td>
+        </tr>
+    </table>
 </form>

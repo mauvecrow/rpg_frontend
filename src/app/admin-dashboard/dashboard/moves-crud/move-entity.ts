@@ -1,0 +1,18 @@
+export interface MoveEntity {
+    moveId: number,
+    moveName: string,
+    moveType: string,
+    moveCategory: string,
+    basePower: number,
+    moveLimit: number,
+    cost: number,
+    priority: number,
+    buffAmount1: number,
+    buffAmount2: number,
+    buffStat1: string,
+    buffStat2: string,
+    debuffAmount1: number,
+    debuffAmount2: number,
+    debuffStat1: string,
+    debuffStat2: string,
+}
