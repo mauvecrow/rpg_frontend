@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MoveEntity } from '../dashboard/moves-crud/move-entity';
+import { MoveEntity } from './move-entity';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 export class AdminService {
 
   constructor(private http: HttpClient) { }
+
+  // ----------------------        Moves Crud         -------------------
 
   serveMovesReadAll(): Observable<MoveEntity[]> {
     return this.http.get<MoveEntity[]>(adminMovesUri);
@@ -37,7 +39,12 @@ export class AdminService {
     return this.http.delete<MoveEntity>(uri);
   }
 
-  
+  // ----------------------        Moveset Crud         -------------------
+
+  serveMovesetReadAll() {
+    return this.http.get(adminMovesetUri);
+  }
 }
 
 const adminMovesUri = 'http://localhost:8080/admin/moves';
+const adminMovesetUri = 'http://localhost:8080/admin/moveset';
