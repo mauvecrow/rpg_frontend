@@ -43,8 +43,13 @@ export class AdminService {
 
   // ----------------------        Moveset Crud         -------------------
 
-  serveMovesetsReadAll() {
-    return this.http.get<MovesetEntity[]>(movesetsUri);
+  serveMovesetsReadAll(characterId?: number) {
+    if(!characterId)
+      return this.http.get<MovesetEntity[]>(movesetsUri);
+    else {
+      const uri = movesetsUri + '?characterId=' + characterId;
+      return this.http.get<MovesetEntity[]>(uri);
+    }
   }
 
   serveMovesetsUpdateAll(movesets: MovesetEntity[]){
@@ -106,5 +111,5 @@ export class AdminService {
 }
 
 const movesUri = 'http://localhost:8080/admin/moves';
-const movesetsUri = 'http://localhost:8080/admin/moveset';
+const movesetsUri = 'http://localhost:8080/admin/movesets';
 const charactersUri = 'http://localhost:8080/admin/characters';
