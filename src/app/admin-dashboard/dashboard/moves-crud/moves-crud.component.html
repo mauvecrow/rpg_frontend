@@ -48,7 +48,7 @@
             </tr>
 
 
-            <ng-container *ngFor="let move of movesFormArray" [formGroup]="move">
+            <ng-container *ngFor="let move of movesFormGroups" [formGroup]="move">
                 <tr>
                     <td>
                         <input type="text" formControlName="moveId" readonly="true">

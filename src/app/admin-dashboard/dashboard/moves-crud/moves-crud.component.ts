@@ -11,11 +11,11 @@ import { MoveEntity } from '../../admin-services/move-entity';
 export class MovesCrudComponent implements OnInit {
 
   moves: MoveEntity[] = [];
-  movesForm = new FormArray([]);
+  movesFormArray = new FormArray([]);
   editable: boolean = false;
 
-  get movesFormArray(): FormGroup[] {
-    return this.movesForm.controls as FormGroup[];
+  get movesFormGroups(): FormGroup[] {
+    return this.movesFormArray.controls as FormGroup[];
   }
 
   constructor(private admin: AdminService, private fb: FormBuilder) { }
@@ -25,7 +25,7 @@ export class MovesCrudComponent implements OnInit {
   }
 
   private setupMoves() {
-    this.movesForm.clear();
+    this.movesFormArray.clear();
     this.admin.serveMovesReadAll()
       .subscribe(resp => {
         this.moves = resp;
@@ -40,12 +40,12 @@ export class MovesCrudComponent implements OnInit {
         const value = move[attr as keyof MoveEntity];
         moveGroup.addControl(attr, new FormControl(value));
       }
-      this.movesForm.push(moveGroup);
+      this.movesFormArray.push(moveGroup);
     }
   }
 
   saveAll() {
-    let rawArray = this.movesForm.getRawValue();
+    let rawArray = this.movesFormArray.getRawValue();
     this.admin.serveMovesUpdateAll(rawArray)
       .subscribe(resp => this.moves = resp);
 
