@@ -1,23 +1,43 @@
 <h2>Manage Movesets</h2>
-<form >
-    <label for="character-selection">Select a character</label>
-    <select name="character-selection" (change)="updateCharacterId($event)">
-        <option *ngFor="let ch of characters" value="{{ ch.characterId }}">{{ ch.name }}</option>
-    </select>
 
-    <fieldset>
-        <legend>Available Moves</legend>
-        <div *ngFor="let move of availableMoves">
-            <label for="{{ move.moveId }}">{{ move.moveName }}</label>
-            <input type="checkbox" id="{{ move.moveId }}">
-        </div>
-    </fieldset>
+<label for="character-selection">Select a character</label>
+<select name="character-selection" (change)="updateCharacterId($event)">
+    <option *ngFor="let ch of characters" value="{{ ch.characterId }}">{{ ch.name }}</option>
+</select>
 
-    <fieldset>
-        <legend>Current Moves</legend>
-        <div *ngFor="let move of currentMoves">
-            <label for="{{ move.moveId }}">{{ move.moveName }}</label>
-            <input type="checkbox" id="{{ move.moveId }}">
-        </div>
-    </fieldset>
-</form>
+<div class="selections">
+    <div class="selection">
+        <form id="available-form" [formGroup]="availableMovesFormGroup" (ngSubmit)="addMoves()">
+        <!-- <form> -->
+            <fieldset>
+                <legend>Available Moves</legend>
+                <div *ngFor="let move of availableMoves">
+                    <label for="{{ move.moveId }}">{{ move.moveName }}</label>
+                    <input type="checkbox" id="{{ move.moveId }}" formControlName="{{ move.moveName }}" value="{{ move.moveId }}">
+                    <!-- <input type="checkbox" id="{{ move.moveId }}" > -->
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="selectors selection">
+        <button type="submit" form="available-form" [disabled]="!readyToAdd" >>> Add >></button>
+        <button type="button">&lt;&lt; Remove &lt;&lt;</button>
+    </div>
+
+    <div class="selection">
+        <!-- <form [formGroup]="currentMovesFormGroup"> -->
+        <form>
+            <fieldset>
+                <legend>Current Moves</legend>
+                <div *ngFor="let move of currentMoves">
+                    <label for="{{ move.moveId }}">{{ move.moveName }}</label>
+                    <!-- <input type="checkbox" id="{{ move.moveId }}" formControlName="{{ move.moveName }}"> -->
+                    <input type="checkbox" id="{{ move.moveId }}">
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+
+</div>

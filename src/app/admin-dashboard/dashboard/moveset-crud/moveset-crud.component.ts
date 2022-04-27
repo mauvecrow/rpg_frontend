@@ -1,6 +1,6 @@
 import { style } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, FormControl, FormBuilder, ValidatorFn, AbstractControl, ValidationErrors, Validators } from '@angular/forms';
 import { map, tap } from 'rxjs';
 import { AdminService } from '../../admin-services/admin.service';
 import { MinCharacterEntity } from '../../admin-services/character-entity';
@@ -15,16 +15,13 @@ import { MovesetEntity } from '../../admin-services/moveset-entity';
 export class MovesetCrudComponent implements OnInit {
 
   movesets: MovesetEntity[] = [];
-  characters: MinCharacterEntity[] = [{'characterId': 0, 'name': 'Select One', 'clazz': ''}];
-  formArray = new FormArray([]);
+  characters: MinCharacterEntity[] = [{ 'characterId': -1, 'name': 'Select One', 'clazz': '' }];
+
   editable = false;
-  selectedCharacterId?: number;
+  selectedCharacterId: number = -1;
+  allMoves: MoveEntity[] = [];
   availableMoves: MoveEntity[] = [];
   currentMoves: MoveEntity[] = [];
-
-  get formGroups(): FormGroup[] {
-    return this.formArray.controls as FormGroup[];
-  }
 
   constructor(private admin: AdminService, private fb: FormBuilder) { }
 
@@ -41,9 +38,17 @@ export class MovesetCrudComponent implements OnInit {
 
   private getAvailableMoves() {
     this.admin.serveMovesReadAll()
-      .subscribe(resp => this.availableMoves = resp);
+      .pipe(
+        tap(moves => {
+          this.allMoves = moves;
+          this.availableMoves = this.allMoves;
+          this.generateFormGroups();
+        })
+      )
+      .subscribe();
   }
 
+  // method to be called for onChange event from select element
   updateCharacterId(event: Event) {
     const idString = (event.target as HTMLSelectElement).value;
     this.selectedCharacterId = parseInt(idString);
@@ -54,90 +59,101 @@ export class MovesetCrudComponent implements OnInit {
   private updateCharacterMoves() {
     this.admin.serveMovesetsReadAll(this.selectedCharacterId)
       .pipe(
-        // tap( ms => console.log(JSON.stringify(ms))),
-        map((msArray) => {
-          this.currentMoves = msArray.map(ms => ms.rpgMove);
-        })
+        map(
+          msArray => this.currentMoves = msArray.map(ms => ms.rpgMove)
+        ),
+        tap(
+          _ => {
+            let ids = this.currentMoves.map(m => m.moveId);
+            this.availableMoves = this.allMoves.filter(move => !ids.includes(move.moveId));
+            this.generateFormGroups();
+          }
+        )
       )
-      .subscribe(
-        _ => console.log('Selected Moves: ' + this.currentMoves)
-      );
+      .subscribe();
   }
 
+  // fields and methods for FORM actions
 
-  private setupMovesets() {
-    this.formArray.clear();
-    this.admin.serveMovesetsReadAll()
-      .subscribe(resp => {
-        this.movesets = resp;
-        this.populateFormGroups();
-      })
+  availableMovesFormGroup = new FormGroup({});
+  currentMovesFormGroup = new FormGroup({});
+  addingList: string[] = [];
+
+
+  private generateFormGroups() {
+    this.availableMovesFormGroup = new FormGroup({} /*, this.validateGroup()*/);
+    this.currentMovesFormGroup = new FormGroup({});
+    this.availableMoves.forEach(
+      move => this.availableMovesFormGroup.addControl(move.moveName, new FormControl())
+    );
+
+    // console.log('form1: ' + JSON.stringify(this.availableMovesFormGroup.getRawValue()) );
+
+    // this.currentMoves.forEach(
+    //   move => this.currentMovesFormGroup.addControl(move.moveName, new FormControl(move))
+    // );
   }
 
-  private populateFormGroups() {
-    for (let moveset of this.movesets) {
-      let formGroup = new FormGroup({});
-      for (let attr in moveset) {
-        const value = moveset[attr as keyof MovesetEntity];
-        formGroup.addControl(attr, new FormControl(value));
+  addMoves() {
+    const form = document.querySelector('#available-form');
+    const inputs = form?.querySelectorAll('input');
+    let ids: string[] = [];
+    inputs?.forEach((input) => { if (input.checked) { ids.push(input.value) } })
+
+    for (let i = 0; i < ids.length; i++) {
+      const index = this.allMoves.findIndex(move => move.moveId == parseInt(ids[i]));
+      const rpgMove = this.allMoves[index];
+      const newMoveset: MovesetEntity = {
+        movesetId: undefined,
+        characterId: this.selectedCharacterId,
+        rpgMove: rpgMove,
+        isDefault: undefined,
+        isUnlockable: undefined
       }
-      this.formArray.push(formGroup);
+      this.admin.serveMovesetsCreate(newMoveset).subscribe(_ => {
+        if (i == ids.length - 1) { //update on the last POST call
+          this.updateCharacterMoves();
+        }
+      })
     }
   }
 
 
-  // saveAll() {
-  //   let rawArray = this.formArray.getRawValue();
-  //   this.admin.serveMovesetsUpdateAll(rawArray)
-  //     .subscribe(resp => this.movesets = resp);
-  //   this.editable = !this.editable;
-  // }
+  // validators
 
-  // createForm = this.fb.group({
-  //   movesetId: undefined,
-  //   characterId: undefined,
-  //   rpgMove: this.fb.group({
-  //     moveId: undefined,
-  //     moveName: undefined,
-  //     moveType: undefined,
-  //     moveCategory: undefined,
-  //     basePower: undefined,
-  //     moveLimit: undefined,
-  //     cost: undefined,
-  //     priority: undefined,
-  //     buffAmount1: undefined,
-  //     buffAmount2: undefined,
-  //     buffStat1: undefined,
-  //     buffStat2: undefined,
-  //     debuffAmount1: undefined,
-  //     debuffAmount2: undefined,
-  //     debuffStat1: undefined,
-  //     debuffStat2: undefined,
-  //   }),
-  //   isDefault: undefined,
-  //   isUnlockable: undefined
-  // })
+  /*
+  Observations with validator at FormGroup:
+  1 - the form validates itself every time the group is referneced. This includes the process of adding control
+  2 - after all controls are added, it appears the form validates its state once for every state
+  3 - summary, if there are 14 moves, the form group will call the validation 28 times initially
+  
+  private validateGroup(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      // this.checkValidity();
+      console.log('control value: ' + JSON.stringify(control.value));
+      const test = (this.selectedCharacterId > 0 && this.addingList.length > 0);
+      console.log('test: ' + (this.selectedCharacterId > 0) + ' && ' + (this.addingList.length))
+      return test ? null : { insufficientSelection: 'Ensure a character is selected and/or moves are selected' };
+    }
+  }
+  */
 
-  // toggleCreate() {
-  //   let form = document.getElementById('createForm');
-  //   let display = form!.style.display;
-  //   form!.style.display = display === 'block' ? 'none' : 'block';
-  // }
+  get readyToAdd(): boolean {
+    this.checkValidity();
+    const test = (this.selectedCharacterId > 0 && this.addingList.length > 0);
+    return test;
+  }
 
-  // postMoveset(){
-  //   this.admin.serveMovesetsCreate(this.createForm.getRawValue())
-  //     .subscribe( _ => {
-  //       let form = document.getElementById('createForm');
-  //       form!.style.display = 'none';
-  //       this.setupMovesets();
-  //       for(let attr in this.createForm.controls){
-  //         this.createForm.get(attr)?.setValue(undefined);
-  //       }
-  //     })
-  // }
+  private checkValidity() {
+    this.addingList = [];
+    const formValue = this.availableMovesFormGroup.value;
+    // console.log(formValue);
+    for (let moveName in formValue) {
+      if (formValue[moveName]) {
+        this.addingList.push(moveName);
+      }
+    }
+    // console.log('adding lsit: ' + this.addingList) //this gets called a lot by angular for whatever reason
+  }
 
-  // deleteMove(movesetId: number){
-  //   this.admin.serveMovesetsDelete(''+movesetId)
-  //     .subscribe( _ => this.setupMovesets());
-  // }
 }

@@ -1,0 +1,13 @@
+.selection {
+    float: left;
+    width: 40%;
+}
+
+.selectors {
+    width: 20%;
+}
+
+button {
+    display: block;
+    margin: auto;
+}
