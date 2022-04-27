@@ -8,13 +8,11 @@
 <div class="selections">
     <div class="selection">
         <form id="available-form" [formGroup]="availableMovesFormGroup" (ngSubmit)="addMoves()">
-        <!-- <form> -->
             <fieldset>
                 <legend>Available Moves</legend>
                 <div *ngFor="let move of availableMoves">
                     <label for="{{ move.moveId }}">{{ move.moveName }}</label>
                     <input type="checkbox" id="{{ move.moveId }}" formControlName="{{ move.moveName }}" value="{{ move.moveId }}">
-                    <!-- <input type="checkbox" id="{{ move.moveId }}" > -->
                 </div>
             </fieldset>
         </form>
@@ -22,18 +20,16 @@
 
     <div class="selectors selection">
         <button type="submit" form="available-form" [disabled]="!readyToAdd" >>> Add >></button>
-        <button type="button">&lt;&lt; Remove &lt;&lt;</button>
+        <button type="submit" form="current-form" [disabled]="!readyToRemove">&lt;&lt; Remove &lt;&lt;</button>
     </div>
 
     <div class="selection">
-        <!-- <form [formGroup]="currentMovesFormGroup"> -->
-        <form>
+        <form id="current-form" [formGroup]="currentMovesFormGroup" (ngSubmit)="removeMoves()">
             <fieldset>
                 <legend>Current Moves</legend>
                 <div *ngFor="let move of currentMoves">
                     <label for="{{ move.moveId }}">{{ move.moveName }}</label>
-                    <!-- <input type="checkbox" id="{{ move.moveId }}" formControlName="{{ move.moveName }}"> -->
-                    <input type="checkbox" id="{{ move.moveId }}">
+                    <input type="checkbox" id="{{ move.moveId }}" formControlName="{{ move.moveName }}" value="{{ move.moveId }}">
                 </div>
             </fieldset>
         </form>

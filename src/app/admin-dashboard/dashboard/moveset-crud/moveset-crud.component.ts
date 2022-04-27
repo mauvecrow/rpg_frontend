@@ -22,12 +22,14 @@ export class MovesetCrudComponent implements OnInit {
   allMoves: MoveEntity[] = [];
   availableMoves: MoveEntity[] = [];
   currentMoves: MoveEntity[] = [];
+  allMovesets: MovesetEntity[] = [];
 
   constructor(private admin: AdminService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.getCharacters();
     this.getAvailableMoves();
+    this.getAllMovesets();
   }
 
   // this method is used to populate the Select element's options
@@ -48,11 +50,16 @@ export class MovesetCrudComponent implements OnInit {
       .subscribe();
   }
 
+  private getAllMovesets(){
+    this.admin.serveMovesetsReadAll()
+      .subscribe(resp => this.allMovesets = resp);
+  }
+
   // method to be called for onChange event from select element
   updateCharacterId(event: Event) {
     const idString = (event.target as HTMLSelectElement).value;
     this.selectedCharacterId = parseInt(idString);
-    console.log('character id: ' + this.selectedCharacterId);
+    // console.log('character id: ' + this.selectedCharacterId);
     this.updateCharacterMoves();
   }
 
@@ -77,8 +84,6 @@ export class MovesetCrudComponent implements OnInit {
 
   availableMovesFormGroup = new FormGroup({});
   currentMovesFormGroup = new FormGroup({});
-  addingList: string[] = [];
-
 
   private generateFormGroups() {
     this.availableMovesFormGroup = new FormGroup({} /*, this.validateGroup()*/);
@@ -87,18 +92,13 @@ export class MovesetCrudComponent implements OnInit {
       move => this.availableMovesFormGroup.addControl(move.moveName, new FormControl())
     );
 
-    // console.log('form1: ' + JSON.stringify(this.availableMovesFormGroup.getRawValue()) );
-
-    // this.currentMoves.forEach(
-    //   move => this.currentMovesFormGroup.addControl(move.moveName, new FormControl(move))
-    // );
+    this.currentMoves.forEach(
+      move => this.currentMovesFormGroup.addControl(move.moveName, new FormControl())
+    );
   }
 
   addMoves() {
-    const form = document.querySelector('#available-form');
-    const inputs = form?.querySelectorAll('input');
-    let ids: string[] = [];
-    inputs?.forEach((input) => { if (input.checked) { ids.push(input.value) } })
+    const ids = this.buildCheckedIdsList('#available-form');
 
     for (let i = 0; i < ids.length; i++) {
       const index = this.allMoves.findIndex(move => move.moveId == parseInt(ids[i]));
@@ -110,16 +110,44 @@ export class MovesetCrudComponent implements OnInit {
         isDefault: undefined,
         isUnlockable: undefined
       }
-      this.admin.serveMovesetsCreate(newMoveset).subscribe(_ => {
-        if (i == ids.length - 1) { //update on the last POST call
-          this.updateCharacterMoves();
-        }
-      })
+      this.admin.serveMovesetsCreate(newMoveset)
+        .subscribe( _ => {
+          if (i == ids.length - 1) { //update on the last POST call
+            this.updateCharacterMoves();
+          }
+        })
     }
+  }
+
+  removeMoves() {
+    // checked moves' ids
+    const ids = this.buildCheckedIdsList('#current-form');
+
+    for (let i = 0; i < ids.length; i++) {
+      // filter returns an array, the array should only have one element.
+      const moveset = this.allMovesets.filter( ms => ms.characterId == this.selectedCharacterId && ms.rpgMove.moveId == parseInt(ids[i]))[0];
+
+      this.admin.serveMovesetsDelete(''+moveset!.movesetId)
+        .subscribe( _ => {
+          if( i == ids.length-1){
+            this.updateCharacterMoves();
+          }
+        })
+    }
+  }
+
+  private buildCheckedIdsList(cssId: string): string[] {
+    const form = document.querySelector(cssId);
+    const inputs = form?.querySelectorAll('input');
+    let ids: string[] = [];
+    inputs?.forEach((input) => { if (input.checked) { ids.push(input.value) } });
+    return ids;
   }
 
 
   // validators
+  addingList: string[] = [];
+  removingList: string[] = [];
 
   /*
   Observations with validator at FormGroup:
@@ -139,21 +167,35 @@ export class MovesetCrudComponent implements OnInit {
   */
 
   get readyToAdd(): boolean {
-    this.checkValidity();
+    this.addingValidity();
     const test = (this.selectedCharacterId > 0 && this.addingList.length > 0);
     return test;
   }
 
-  private checkValidity() {
+  get readyToRemove(): boolean {
+    this.removingValidity();
+    return this.removingList.length > 0;
+  }
+
+  private addingValidity() {
     this.addingList = [];
     const formValue = this.availableMovesFormGroup.value;
-    // console.log(formValue);
     for (let moveName in formValue) {
       if (formValue[moveName]) {
         this.addingList.push(moveName);
       }
     }
     // console.log('adding lsit: ' + this.addingList) //this gets called a lot by angular for whatever reason
+  }
+
+  private removingValidity() {
+    this.removingList = [];
+    const formValue = this.currentMovesFormGroup.value;
+    for (let moveName in formValue) {
+      if (formValue[moveName]) {
+        this.removingList.push(moveName);
+      }
+    }
   }
 
 }
