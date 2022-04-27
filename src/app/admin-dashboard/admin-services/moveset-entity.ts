@@ -1,9 +1,9 @@
 import { MoveEntity } from "./move-entity";
 
 export interface MovesetEntity {
-    movesetId: number,
+    movesetId?: number,
     characterId: number,
     rpgMove: MoveEntity,
-    isDefault: string,
-    isUnlockable: string
+    isDefault?: string,
+    isUnlockable?: string
 }
