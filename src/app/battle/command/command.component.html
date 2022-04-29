@@ -1,9 +1,8 @@
-<p>command works!</p>
-<div class="menu" *ngFor="let option of menu">
-    <button>{{ option }}</button>
-</div>
-<div class="moves">
-    <ul *ngFor="let move of gameMoves">
-        <li>{{ move.moveName }}</li>
-    </ul>
+<div class="command-container">
+    <div class="menu comm" *ngFor="let option of menu">
+        <button>{{ option }}</button>
+    </div>
+    <div class="moves comm">
+        <button type="button" *ngFor="let move of gameMoves">{{ move.moveName }}</button>
+    </div>
 </div>

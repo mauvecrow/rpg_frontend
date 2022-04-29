@@ -1,0 +1,15 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 40% 30% 30%;
+    grid-template-rows: 60% 40%;
+}
+
+.visuals { grid-area: vis;}
+.command { grid-area: com;}
+.stats { grid-area: sta;}
+
+.grid-container {
+    grid-template-areas: 
+    'vis vis vis'
+    'com com sta';
+}
