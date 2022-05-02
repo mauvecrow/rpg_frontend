@@ -3,6 +3,9 @@
         <button>{{ option }}</button>
     </div>
     <div class="moves comm">
-        <button type="button" *ngFor="let move of gameMoves">{{ move.moveName }}</button>
+        <button type="button" *ngFor="let move of gameMoves" (click)="submitTurn(move)">{{ move.moveName }}</button>
+    </div>
+    <div class="comm">
+        {{ resultState }}
     </div>
 </div>
