@@ -1,10 +1,10 @@
-<div *ngIf="meta1 && meta2">
+<div *ngIf="meta.length == 2">
     <div class="grid-container">
         <div class="visuals">
-            <app-visuals [gc1]="meta1.gameCharacter" [gc2]="meta2.gameCharacter"></app-visuals>
+            <app-visuals [gc1]="meta[0].gameCharacter" [gc2]="meta[1].gameCharacter"></app-visuals>
         </div>
         <div class="command">
-            <app-command [gameMoves]="meta1.moves"></app-command>
+            <app-command [meta]="meta"></app-command>
         </div>
         <div class="stats">
             stats

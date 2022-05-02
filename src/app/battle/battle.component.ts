@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { tap } from 'rxjs';
 import { CharactersService } from '../services/characters.service';
 import { GameMeta } from '../services/game-meta';
 
@@ -10,8 +11,7 @@ import { GameMeta } from '../services/game-meta';
 })
 export class BattleComponent implements OnInit {
 
-  meta1?: GameMeta;
-  meta2?: GameMeta;
+  meta: GameMeta[] = [];
 
   constructor(private route: ActivatedRoute, private service: CharactersService) { }
 
@@ -23,8 +23,19 @@ export class BattleComponent implements OnInit {
     const name1 = this.route.snapshot.paramMap.get('player1');
     const name2 = this.route.snapshot.paramMap.get('player2');
 
-    this.service.getMeta(name1!).subscribe( gm => this.meta1 = gm);
-    this.service.getMeta(name2!).subscribe( gm => this.meta2 = gm);
+    this.service.getMeta(name1!)
+      .pipe(
+        tap(gm1 => this.meta.push(gm1))
+      )
+      .subscribe(_ => {
+        this.service.getMeta(name2!)
+          .pipe(
+            tap(gm2 => this.meta.push(gm2))
+          )
+          .subscribe();
+      });
+
+
   }
 
 }
