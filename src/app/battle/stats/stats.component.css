@@ -1,0 +1,6 @@
+.stats-group { width: 100%;}
+.stats {
+    float: left;
+    width: 50%;
+}
+.stats h4, .stats h3 { text-align: center;}

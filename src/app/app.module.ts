@@ -11,6 +11,7 @@ import { BattleComponent } from './battle/battle.component';
 import { VisualsComponent } from './battle/visuals/visuals.component';
 import { CommandComponent } from './battle/command/command.component';
 import { AdminDashboardModule } from './admin-dashboard/admin-dashboard.module';
+import { StatsComponent } from './battle/stats/stats.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { AdminDashboardModule } from './admin-dashboard/admin-dashboard.module';
     BattleComponent,
     VisualsComponent,
     CommandComponent,
+    StatsComponent,
   ],
   imports: [
     BrowserModule,

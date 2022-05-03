@@ -1,0 +1,18 @@
+<div class="stats-group">
+    <div class="stats p1">
+        <h3>{{ gc1.name }}</h3>
+        <div *ngFor="let stat of stats1">
+            <h4 >
+                <span class="stat">{{ stat[0] }}</span>: {{ stat[1] }}
+            </h4>
+        </div>
+    </div>
+    <div class="stats p2">
+        <h3>{{ gc2.name }}</h3>
+        <div *ngFor="let stat of stats2">
+            <h4 >
+                <span class="stat">{{ stat[0] }}</span>: {{ stat[1] }}
+            </h4>
+        </div>
+    </div>
+</div>
