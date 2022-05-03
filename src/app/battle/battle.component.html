@@ -1,7 +1,7 @@
 <div *ngIf="meta.length == 2">
     <div class="grid-container">
         <div class="visuals">
-            <app-visuals [gc1]="meta[0].gameCharacter" [gc2]="meta[1].gameCharacter"></app-visuals>
+            <app-visuals [meta]="meta"></app-visuals>
         </div>
         <div class="command">
             <app-command [meta]="meta"></app-command>

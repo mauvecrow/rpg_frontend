@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { GameCharacter } from 'src/app/services/game-character';
+import { GameMeta } from 'src/app/services/game-meta';
+
 
 @Component({
   selector: 'app-visuals',
@@ -8,8 +9,15 @@ import { GameCharacter } from 'src/app/services/game-character';
 })
 export class VisualsComponent implements OnInit {
 
-  @Input() gc1!: GameCharacter;
-  @Input() gc2!: GameCharacter;
+  @Input() meta: GameMeta[] = [];
+
+  get gc1(){
+    return this.meta[0].gameCharacter;
+  }
+
+  get gc2(){
+    return this.meta[1].gameCharacter;
+  }
 
   profile1?: string;
   profile2?: string;
