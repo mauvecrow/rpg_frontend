@@ -1,11 +1,19 @@
 <div class="command-container">
-    <div class="menu comm" *ngFor="let option of menu">
-        <button>{{ option }}</button>
+    <div class="menu comm">
+        <div *ngFor="let option of menu; index as i">
+            <button (click)="submitCategory(i)">{{ option }}</button>
+        </div>
+        
     </div>
     <div class="moves comm">
-        <button type="button" *ngFor="let move of gameMoves" (click)="submitTurn(move)">{{ move.moveName }}</button>
+        <div  *ngFor="let move of gameMoves">
+            <button type="button" (click)="submitTurn(move)">{{ move.moveName }}</button>
+        </div>
+        <div *ngIf="menuChoice >= 0">
+            <button type="button" (click)="submitCategory(-1)">Back</button>
+        </div>
     </div>
     <div class="comm">
-        {{ resultState }}
+        {{ message }}
     </div>
 </div>
