@@ -1,19 +1,23 @@
 <div class="command-container">
-    <div class="menu comm">
-        <div *ngFor="let option of menu; index as i">
-            <button (click)="submitCategory(i)">{{ option }}</button>
+    <h2>{{ phase }}</h2>
+    <div class="panel" *ngIf="phase==='SELECTION'">
+        <div class="menu comm">
+            <div *ngFor="let option of menu; index as i">
+                <button (click)="submitCategory(i)">{{ option }}</button>
+            </div>
+            
         </div>
-        
+        <div class="moves comm">
+            <div  *ngFor="let move of gameMoves">
+                <button type="button" (click)="submitTurn(move)">{{ move.moveName }}</button>
+            </div>
+            <div *ngIf="menuChoice >= 0">
+                <button type="button" (click)="submitCategory(-1)">Back</button>
+            </div>
+        </div>
     </div>
-    <div class="moves comm">
-        <div  *ngFor="let move of gameMoves">
-            <button type="button" (click)="submitTurn(move)">{{ move.moveName }}</button>
-        </div>
-        <div *ngIf="menuChoice >= 0">
-            <button type="button" (click)="submitCategory(-1)">Back</button>
-        </div>
-    </div>
-    <div class="comm">
+    
+    <div class="message" (click)="updatePhase()">
         {{ message }}
     </div>
 </div>
