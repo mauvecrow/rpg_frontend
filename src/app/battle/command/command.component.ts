@@ -1,10 +1,10 @@
-import { sequence } from '@angular/animations';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { tap } from 'rxjs';
 import { BattleEngineService } from 'src/app/services/battle-engine.service';
 import { GameMeta } from 'src/app/services/game-meta';
 import { GameMove } from 'src/app/services/game-move';
 import { PlayerState, TurnState } from 'src/app/services/turn-state';
+import { MetaChanges } from './meta-changes';
 
 @Component({
   selector: 'app-command',
@@ -87,6 +87,7 @@ export class CommandComponent implements OnInit {
 
   first?: PlayerState;
   second?: PlayerState;
+  @Output() metaChangesEmitter = new EventEmitter<MetaChanges>();
 
   private processStatChanges() {
     const p1CurrStats = this.currentState!.player1State.stats;
@@ -103,8 +104,12 @@ export class CommandComponent implements OnInit {
   }
 
   private getPlayerState(playerId: string) {
-    return playerId === this.currentState!.player1State.playerId ?
-      this.currentState!.player1State : this.currentState!.player2State;
+    return this.isFirstPlayer(playerId) ?
+      this.newState!.player1State : this.newState!.player2State;
+  }
+
+  private isFirstPlayer(playerId: string): boolean {
+    return playerId === this.newState!.player1State.playerId;
   }
 
   // ---------------------- MOVE phases -------------------------------
@@ -123,7 +128,25 @@ export class CommandComponent implements OnInit {
         return 'acts';
     }
   }
+
+  private buildMetaChanges(playerId: string, statsArray: [string, number][]){
+    let position = this.isFirstPlayer(playerId) ? 0 : 1;
+    return {gameMetaPosition: position, statChanges: statsArray};
+  }
+
+  private filterStats(newStats: any, stats: string[]){
+    return Object.entries(newStats)
+      .filter( statArray => !stats.includes(statArray[0])) as [string, number][];
+  }
+
+  private captureStats(newStats: any, stats: string[]){
+    return Object.entries(newStats)
+      .filter( statArray => stats.includes(statArray[0])) as [string, number][];
+  }
   // ---------------------- ANIMATE phases -------------------------------
+  firstMove?: GameMove;
+  secondMove?: GameMove;
+
   // ---------------------- CHECK phases -------------------------------
 
   // ---------------------- Battle Flow -------------------------------
@@ -151,29 +174,75 @@ export class CommandComponent implements OnInit {
         break;
       case 'PROCESS':
         this.message = 'FIGHT!';
-        const [changes1, changes2] = this.processStatChanges();
+        // const [changes1, changes2] = this.processStatChanges();
         const battleOrder = this.newState!.sequence;
         this.first = this.getPlayerState(battleOrder[0]);
         this.second = this.getPlayerState(battleOrder[1]);
         // this.message = JSON.stringify(changes1) + '\n' + JSON.stringify(changes2);
         break;
       case 'MOVE1':
-        let firstMove = this.first!.move;
+        this.firstMove = this.first!.move;
         let firstName = this.first!.playerId.slice(8);
-        let action = this.determineAction(firstMove.type);
-        this.message = `${firstName} ${action} with ${firstMove.moveName}!`;
+        let action = this.determineAction(this.firstMove.type);
+        this.message = `${firstName} ${action} with ${this.firstMove.moveName}!`;
+        let updatedStats1 = this.captureStats(this.first!.stats, ['Energy']);
+        let energyChange1 = this.buildMetaChanges(this.first!.playerId, updatedStats1);
+        this.metaChangesEmitter.emit(energyChange1);
         break;
       case 'ANIMATE1':
+        if( this.firstMove!.type === 'Block'){
+          // no stat changes
+          this.message = 'Guarding!'
+        }
+        else if ( this.firstMove!.type === 'Buff'){
+          let updatedStats1 = this.filterStats(this.first!.stats, ['Health','Energy']);
+          let statChange1 = this.buildMetaChanges(this.first!.playerId, updatedStats1);
+          this.metaChangesEmitter.emit(statChange1);
+          this.message = 'Buff!'
+        }
+        else { // Damage, Debuff
+          let updatedStats2 = this.captureStats(this.second!.stats, ['Health']);
+          let statChange2 = this.buildMetaChanges(this.second!.playerId, updatedStats2);
+          this.metaChangesEmitter.emit(statChange2);
+          this.message = 'take this!'
+        }
+        
         break;
       case 'CHECK1':
         break;
       case 'MOVE2':
-        let secondMove = this.second!.move;
+        this.secondMove = this.second!.move;
         let secondName = this.second!.playerId.slice(8);
-        let action2 = this.determineAction(secondMove.type);
-        this.message = `${secondName} ${action2} with ${secondMove.moveName}!`;
+        let action2 = this.determineAction(this.secondMove.type);
+        this.message = `${secondName} ${action2} with ${this.secondMove.moveName}!`;
+        let updatedStats2 = this.captureStats(this.second!.stats, ['Energy']);
+        let energyChanges2 = this.buildMetaChanges(this.second!.playerId, updatedStats2);
+        this.metaChangesEmitter.emit(energyChanges2);
         break;
       case 'ANIMATE2':
+        if( this.secondMove!.type === 'Block'){
+          // no stat changes other than energy
+          this.message = 'Guarding!'
+        }
+        else if ( this.secondMove!.type === 'Buff'){
+          let updatedStats2 = this.filterStats(this.second!.stats, ['Health','Energy'])
+          let statChange2 = this.buildMetaChanges(this.second!.playerId, updatedStats2);
+          this.metaChangesEmitter.emit(statChange2);
+          this.message = 'Buff!'
+        }
+        else if ( this.secondMove!.type === 'Damage'){
+          let updatedStats1 = this.captureStats(this.first!.stats, ['Health']);
+          let statChange1 = this.buildMetaChanges(this.first!.playerId, updatedStats1);
+          this.metaChangesEmitter.emit(statChange1);
+          this.message = 'take this!'
+        }
+        else { // Debuff
+          let updatedStats1 = this.filterStats(this.first!.stats, ['Health','Energy']);
+          let statChange1 = this.buildMetaChanges(this.first!.playerId, updatedStats1);
+          this.metaChangesEmitter.emit(statChange1);
+          this.message = 'get wrecked!'
+        }
+
         break;
       case 'CHECK2':
         break;

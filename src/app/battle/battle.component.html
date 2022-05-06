@@ -4,7 +4,7 @@
             <app-visuals [meta]="meta"></app-visuals>
         </div>
         <div class="command">
-            <app-command [meta]="meta"></app-command>
+            <app-command [meta]="meta" (metaChangesEmitter)="processMetaChanges($event)"></app-command>
         </div>
         <div class="stats">
             <app-stats [meta]="meta"></app-stats>

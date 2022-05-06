@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs';
 import { CharactersService } from '../services/characters.service';
 import { GameMeta } from '../services/game-meta';
+import { MetaChanges } from './command/meta-changes';
 
 @Component({
   selector: 'app-battle',
@@ -34,8 +35,16 @@ export class BattleComponent implements OnInit {
           )
           .subscribe();
       });
+  }
 
+  processMetaChanges(metaChange: MetaChanges){
+    let statsCount = metaChange.statChanges.length;
+    for(let i = 0; i < statsCount; i++){
+      this.meta[metaChange.gameMetaPosition].gameCharacter.stats[metaChange.statChanges[i][0]] = metaChange.statChanges[i][1]
+      // console.log('stat: '+metaChange.statChanges[i][0])
+      // console.log('value: '+metaChange.statChanges[i][1])
 
+    }
   }
 
 }
