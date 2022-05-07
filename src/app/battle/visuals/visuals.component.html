@@ -1,4 +1,3 @@
-<h1>{{ rounds }}</h1>
 <div class="profiles">
     <div class="profile p1">
         <img [src]="profile1" alt="player 1 avatar">
@@ -11,26 +10,42 @@
             </div>
             <div class="hp-bar">
                 <div class="hp-outer-bar">
-                    <div class="hp-inner-bar" [@hpChange]="{value: hp1Percentage >= 100, params: {currentHp: hp1Percentage}}"></div>
+                    <div class="hp-inner-bar" [@hpChange]="{value: stateChange == 'p1-hp', params: {currentHp: hp1Percentage}}"></div>
                 </div>
             </div>
             <div class="energy">
-                <h4>Energy: <span id="hp1">{{ gc1.stats['Energy'] }}</span></h4>
+                <h4>Energy: <span id="en1">{{ gc1.stats['Energy'] }}</span></h4>
             </div>
             <div class="en-bar">
                 <div class="en-outer-bar">
-                    <div class="en-inner-bar"></div>
+                    <div class="en-inner-bar" [@enChange]="{value: stateChange == 'p1-en', params: {currentEn: en1Percentage}}"></div>
                 </div>
             </div>
         </div>
     </div>
     
     <div class="profile p2">
-        <h2>{{ gc2.name }}</h2>
         <img [src]="profile2" alt="player 2 avatar">
-        <div class="stat-bars">
-            <h3>Health: {{ gc2.stats['Health']}}/{{ maxHealth2 }}</h3>
-            <h3>Energy: {{ gc2.stats['Energy']}}/{{ maxEnergy2 }}</h3>
+        <div class="stats">
+            <div class="character-name">
+                <h3>{{ gc2.name }}</h3>
+            </div>
+            <div class="health">
+                <h4>Health: <span id="hp2">{{ gc2.stats['Health'] }}</span></h4>
+            </div>
+            <div class="hp-bar">
+                <div class="hp-outer-bar">
+                    <div class="hp-inner-bar" [@hpChange]="{value: stateChange == 'p2-hp', params: {currentHp: hp2Percentage}}"></div>
+                </div>
+            </div>
+            <div class="energy">
+                <h4>Energy: <span id="en2">{{ gc2.stats['Energy'] }}</span></h4>
+            </div>
+            <div class="en-bar">
+                <div class="en-outer-bar">
+                    <div class="en-inner-bar" [@enChange]="{value: stateChange == 'p2-en', params: {currentEn: en2Percentage}}"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -13,7 +13,7 @@ import { MetaChanges } from './command/meta-changes';
 export class BattleComponent implements OnInit {
 
   meta: GameMeta[] = [];
-  rounds = 0;
+  metaChanges?: MetaChanges;
 
   constructor(private route: ActivatedRoute, private service: CharactersService) { }
 
@@ -46,7 +46,7 @@ export class BattleComponent implements OnInit {
       // console.log('value: '+metaChange.statChanges[i][1])
 
     }
-    this.rounds++;
+    this.metaChanges = metaChange;
   }
 
 }

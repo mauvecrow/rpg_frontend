@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { GameMeta } from 'src/app/services/game-meta';
 import { trigger, style, state, animate, transition } from '@angular/animations'
+import { MetaChanges } from '../command/meta-changes';
 
 
 @Component({
@@ -9,22 +10,40 @@ import { trigger, style, state, animate, transition } from '@angular/animations'
   styleUrls: ['./visuals.component.css'],
   animations: [
     trigger('hpChange', [
-      state('false',
+      state('true',
         style({
           width: '{{currentHp}}%'
         }), {
           params: {currentHp: 100} 
         }
       ),
+      state('false',
+      style({
+        width: '{{currentHp}}%'
+      }), {
+        params: {currentHp: 100} 
+      }
+      ),
+      transition('false => true', [
+        animate('0.75s 0.25s ease-out')
+      ])
+    ]),
+    trigger('enChange', [
       state('true',
         style({
-          width: '{{currentHp}}%'
-        }),
-        {
-          params: { currentHp: 100 }
+          width: '{{currentEn}}%'
+        }), {
+          params: {currentEn: 100} 
         }
       ),
-      transition('* => *', [
+      state('false',
+      style({
+        width: '{{currentEn}}%'
+      }), {
+        params: {currentEn: 100} 
+      }
+      ),
+      transition('false => true', [
         animate('0.75s 0.25s ease-out')
       ])
     ])
@@ -33,7 +52,7 @@ import { trigger, style, state, animate, transition } from '@angular/animations'
 export class VisualsComponent implements OnInit {
 
   @Input() meta: GameMeta[] = [];
-  @Input() rounds!: number;
+  @Input() metaChanges?: MetaChanges;
 
   get gc1() {
     return this.meta[0].gameCharacter;
@@ -45,16 +64,45 @@ export class VisualsComponent implements OnInit {
 
   get hp1Percentage() {
     return this.gc1.stats['Health']/this.maxHealth1 * 100;
+  }
+   
+  get hp2Percentage() {
+    return this.gc2.stats['Health']/this.maxHealth2 * 100;
   } 
 
-  // get hasHp1Changed() {
-  //   return this.gc1.stats['Health'] === this.
-  // }
+  get en1Percentage() {
+    return this.gc1.stats['Energy']/this.maxEnergy1 * 100;
+  }
+   
+  get en2Percentage() {
+    return this.gc2.stats['Energy']/this.maxEnergy2 * 100;
+  } 
+
+  get stateChange(){
+    if(this.metaChanges == undefined){
+      return 'start';
+    }
+    let player = this.metaChanges.gameMetaPosition == 0 ? 'p1' : 'p2';
+    let firstStat = this.metaChanges.statChanges[0][0];
+    let statCode;
+    switch(firstStat){
+      case 'Health':
+        statCode = 'hp';
+        break;
+      case 'Energy':
+        statCode = 'en';
+        break;
+      default:
+        statCode = 'stats';
+        break;
+    }
+    // console.log('stat change: '+player + '-' + statCode);
+    return player + '-' + statCode;
+  }
 
   profile1?: string;
   profile2?: string;
   maxHealth1: number = -1;
-  prevHealth1: number = 0;
   maxEnergy1: number = -1;
   maxHealth2: number = -1;
   maxEnergy2: number = -1;
