@@ -13,6 +13,7 @@ import { MetaChanges } from './command/meta-changes';
 export class BattleComponent implements OnInit {
 
   meta: GameMeta[] = [];
+  rounds = 0;
 
   constructor(private route: ActivatedRoute, private service: CharactersService) { }
 
@@ -40,11 +41,12 @@ export class BattleComponent implements OnInit {
   processMetaChanges(metaChange: MetaChanges){
     let statsCount = metaChange.statChanges.length;
     for(let i = 0; i < statsCount; i++){
-      this.meta[metaChange.gameMetaPosition].gameCharacter.stats[metaChange.statChanges[i][0]] = metaChange.statChanges[i][1]
+      this.meta[metaChange.gameMetaPosition].gameCharacter.stats[metaChange.statChanges[i][0]] = metaChange.statChanges[i][1];
       // console.log('stat: '+metaChange.statChanges[i][0])
       // console.log('value: '+metaChange.statChanges[i][1])
 
     }
+    this.rounds++;
   }
 
 }

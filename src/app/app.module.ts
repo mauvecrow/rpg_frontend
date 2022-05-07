@@ -12,6 +12,7 @@ import { VisualsComponent } from './battle/visuals/visuals.component';
 import { CommandComponent } from './battle/command/command.component';
 import { AdminDashboardModule } from './admin-dashboard/admin-dashboard.module';
 import { StatsComponent } from './battle/stats/stats.component';
+import { BrowserAnimationsModule }  from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { StatsComponent } from './battle/stats/stats.component';
     BrowserModule,
     AdminDashboardModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

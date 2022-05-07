@@ -200,8 +200,14 @@ export class CommandComponent implements OnInit {
           this.metaChangesEmitter.emit(statChange1);
           this.message = 'Buff!'
         }
-        else { // Damage, Debuff
+        else if ( this.firstMove!.type === 'Damage'){ 
           let updatedStats2 = this.captureStats(this.second!.stats, ['Health']);
+          let statChange2 = this.buildMetaChanges(this.second!.playerId, updatedStats2);
+          this.metaChangesEmitter.emit(statChange2);
+          this.message = 'take this!'
+        }
+        else { // Debuf
+          let updatedStats2 = this.filterStats(this.second!.stats, ['Health','Energy']);
           let statChange2 = this.buildMetaChanges(this.second!.playerId, updatedStats2);
           this.metaChangesEmitter.emit(statChange2);
           this.message = 'take this!'

@@ -1,7 +1,7 @@
 <div *ngIf="meta.length == 2">
     <div class="grid-container">
         <div class="visuals">
-            <app-visuals [meta]="meta"></app-visuals>
+            <app-visuals [meta]="meta" [rounds]="rounds"></app-visuals>
         </div>
         <div class="command">
             <app-command [meta]="meta" (metaChangesEmitter)="processMetaChanges($event)"></app-command>

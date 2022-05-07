@@ -1,8 +1,13 @@
+div {
+    box-sizing: border-box;
+}
+
 .profiles {
     background-color: #CDCAA3;
     height: 100%;
     width: 100%;
 }
+
 .profile {
     width: 50%;
     float: left;
@@ -12,3 +17,48 @@
     height: 400px;
     object-fit: contain;
 }
+
+.stats {
+    display: grid;
+    grid-template-columns: 30% 40% 30%;
+    grid-template-rows: 50% 30% 20%;
+}
+
+.character-name {
+    grid-area: name;
+    outline: red solid 1px
+}
+
+.health {
+    grid-area: hp;
+    outline: blue solid 1px
+}
+
+.hp-bar {
+    grid-area: hpb;
+    outline: green solid 1px
+}
+
+.energy {
+    grid-area: en;
+    outline: orange solid 1px
+}
+
+.en-bar {
+    grid-area: enb;
+    outline: yellow solid 1px
+}
+
+.stats {
+    grid-template-areas:
+        'name name hp'
+        'hpb hpb hpb'
+        'enb enb en';
+}
+
+.hp-outer-bar { height: 1em; margin: 10px .5em;}
+.en-outer-bar { height: .8em; margin: 10px .5em;}
+.hp-inner-bar, .en-inner-bar { height: 100%;}
+
+.hp-outer-bar, .en-outer-bar { background-color: gray;}
+.hp-inner-bar { background-color: azure;}
