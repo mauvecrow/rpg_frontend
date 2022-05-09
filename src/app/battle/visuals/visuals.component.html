@@ -1,12 +1,12 @@
 <div class="profiles">
     <div class="profile p1">
         <img [src]="profile1" alt="player 1 avatar">
-        <div class="stats">
+        <div class="gauge">
             <div class="character-name">
-                <h3>{{ gc1.name }}</h3>
+                <h4>{{ gc1.name }}</h4>
             </div>
             <div class="health">
-                <h4>Health: <span id="hp1">{{ gc1.stats['Health'] }}</span></h4>
+                <h4>HP: <span id="hp1">{{ gc1.stats['Health'] }}</span></h4>
             </div>
             <div class="hp-bar">
                 <div class="hp-outer-bar">
@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="energy">
-                <h4>Energy: <span id="en1">{{ gc1.stats['Energy'] }}</span></h4>
+                <h4>EN: <span id="en1">{{ gc1.stats['Energy'] }}</span></h4>
             </div>
             <div class="en-bar">
                 <div class="en-outer-bar">
@@ -26,12 +26,12 @@
     
     <div class="profile p2">
         <img [src]="profile2" alt="player 2 avatar">
-        <div class="stats">
+        <div class="gauge">
             <div class="character-name">
-                <h3>{{ gc2.name }}</h3>
+                <h4>{{ gc2.name }}</h4>
             </div>
             <div class="health">
-                <h4>Health: <span id="hp2">{{ gc2.stats['Health'] }}</span></h4>
+                <h4>HP: <span id="hp2">{{ gc2.stats['Health'] }}</span></h4>
             </div>
             <div class="hp-bar">
                 <div class="hp-outer-bar">
@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="energy">
-                <h4>Energy: <span id="en2">{{ gc2.stats['Energy'] }}</span></h4>
+                <h4>EN: <span id="en2">{{ gc2.stats['Energy'] }}</span></h4>
             </div>
             <div class="en-bar">
                 <div class="en-outer-bar">

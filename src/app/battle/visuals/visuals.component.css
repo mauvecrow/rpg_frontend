@@ -1,9 +1,5 @@
-div {
-    box-sizing: border-box;
-}
-
 .profiles {
-    background-color: #CDCAA3;
+    background-color: #fafafa;
     height: 100%;
     width: 100%;
 }
@@ -18,48 +14,84 @@ div {
     object-fit: contain;
 }
 
-.stats {
+.gauge {
     display: grid;
     grid-template-columns: 30% 40% 30%;
     grid-template-rows: 50% 30% 20%;
 }
 
-.character-name {
-    grid-area: name;
-    outline: red solid 1px
-}
+.character-name { grid-area: name;}
 
-.health {
-    grid-area: hp;
-    outline: blue solid 1px
-}
+.health { grid-area: hp;}
 
-.hp-bar {
-    grid-area: hpb;
-    outline: green solid 1px
-}
+.hp-bar { grid-area: hpb;}
 
-.energy {
-    grid-area: en;
-    outline: orange solid 1px
-}
+.energy { grid-area: en;}
 
-.en-bar {
-    grid-area: enb;
-    outline: yellow solid 1px
-}
+.en-bar { grid-area: enb;}
 
-.stats {
+.gauge {
     grid-template-areas:
         'name name hp'
         'hpb hpb hpb'
         'enb enb en';
 }
 
-.hp-outer-bar { height: 1em; margin: 10px .5em;}
-.en-outer-bar { height: .8em; margin: 10px .5em;}
-.hp-inner-bar, .en-inner-bar { height: 100%;}
+.hp-outer-bar {
+    height: 1em;
+    margin: 10px .5em;
+}
 
-.hp-outer-bar, .en-outer-bar { background-color: gray;}
+.en-outer-bar {
+    height: .8em;
+    margin: 10px .5em;
+}
+
+.hp-inner-bar,
+.en-inner-bar {
+    height: 100%;
+}
+
+.hp-outer-bar, .en-outer-bar 
+{ background-color: gray;}
+
 .hp-inner-bar { background-color: azure;}
+
 .en-inner-bar { background-color: deepskyblue;}
+
+.gauge {
+    width: 15%;
+    position: absolute
+}
+
+.p1 .gauge {
+    left: 25%;
+    top: 5%;
+}
+
+.p2 .gauge {
+    right: 25%;
+    top: 25%;
+}
+
+.profile img { width: 45%}
+
+.p2 img { float: right;}
+
+.gauge {
+    border-radius: 1em;
+    background: 
+        linear-gradient(to left, rgba(79, 41, 180, 0.8) ,rgba(79, 41, 180, 0.4) ) padding-box,
+        linear-gradient(#5b6c6d, azure, #5b6c6d 40%) border-box;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 3px 6px;
+    box-sizing: content-box;
+    padding: 15px;
+}
+
+.character-name {margin-left: .5em}
+
+h4 {
+  font-family: sans-serif;
+}

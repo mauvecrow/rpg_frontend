@@ -7,3 +7,29 @@
     padding: 2.5em;
 }
 .message:hover { background-color: blanchedalmond; }
+
+
+
+.menu button {
+    width: 10em;
+    background: 
+      linear-gradient(to left, #216674 ,#4da3aa , #36cbd8 40% 65%, #216674) padding-box,
+      linear-gradient(#5b6c6d, azure, #5b6c6d 40%) border-box;
+    border-radius: 4em;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 3px 6px;
+    text-align: left;
+    color: white;
+  }
+  
+  .menu button:hover {
+    background: 
+      linear-gradient(to left, #216674 , #216674) padding-box,
+      linear-gradient(#5b6c6d, azure, #5b6c6d 40%) border-box;
+    text-align: center;
+  /*   margin-left: 1em; */
+  }
+  
+  .menu div:nth-child(2) { margin-left: 1em;}
+  .menu div:nth-child(3) { margin-left: 2em;}

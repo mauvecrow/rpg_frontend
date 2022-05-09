@@ -1,5 +1,8 @@
 <div class="command-container">
     <h2>{{ phase }}</h2>
+    <div class="message" (click)="updatePhase()">
+        {{ message }}
+    </div>
     <div class="panel" *ngIf="phase==='SELECTION'">
         <div class="menu comm">
             <div *ngFor="let option of menu; index as i">
@@ -17,7 +20,4 @@
         </div>
     </div>
     
-    <div class="message" (click)="updatePhase()">
-        {{ message }}
-    </div>
 </div>
