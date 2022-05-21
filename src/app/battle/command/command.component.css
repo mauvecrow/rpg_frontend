@@ -1,12 +1,27 @@
+.command-container, .menu { 
+  /* background: linear-gradient(rgb(44,23,102) 80%, rgba(79, 41, 180, 0.8));  */
+  height: 100%}
 .comm { float: left; }
-.panel { overflow: hidden; }
+.panel { overflow: hidden; height: 85%;}
 .message {
     width: 100%;
-    height: 100%;
-    background-color: azure;
+    height: 20%;
+    /* background-color: azure; */
     padding: 2.5em;
 }
 .message:hover { background-color: blanchedalmond; }
+.classic {
+  font: 1.2em sans-serif;
+  color: white;
+  text-shadow: -1px 1px 0 black,
+                1px 1px 0 black,
+                1px -1px 0 black,
+                -1px -1px 0 black
+    ;
+  background: linear-gradient(175deg, blue , darkblue 40% 80%, black 99%);
+  border: solid lightgray .25em;
+  border-radius: 10px;
+}
 
 
 
@@ -33,3 +48,21 @@
   
   .menu div:nth-child(2) { margin-left: 1em;}
   .menu div:nth-child(3) { margin-left: 2em;}
+
+  .move-detail {
+      background-color: black;
+      display: grid;
+      grid-template-columns: 25% 25% 25% 25%;
+      grid-template-columns: 80% 20%;
+  }
+
+  .move-name { grid-area: name; }
+  .move-cost { grid-area: cost; }
+  .move-limit { grid-area: lim; }
+  .move-effect { grid-area: eff; }
+
+  .move-detail {
+      grid-template-areas: 
+      'name name name name'
+      'cost lim eff eff';
+  }
