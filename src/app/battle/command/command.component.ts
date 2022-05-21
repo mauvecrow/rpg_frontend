@@ -80,8 +80,24 @@ export class CommandComponent implements OnInit {
     let p2 = this.meta[1];
     let currentEnergy = p2.gameCharacter.stats['Energy'];
     let availableMoves = p2.moves.filter(move => move.cost <= currentEnergy);
-    let randomIndex = Math.floor(Math.random() * availableMoves.length);
-    return availableMoves[randomIndex];
+    if(availableMoves.length > 0){
+      let randomIndex = Math.floor(Math.random() * availableMoves.length);
+      return availableMoves[randomIndex];
+    }
+    else { // backup incase no available has been assigned
+      return {
+        moveName: 'Brink',
+        category: 'Combat',
+        type: 'Damage',
+        basePower: 10,
+        cost: -10,
+        limit: 99,
+        priority: 1,
+        buffs: {},
+        debuffs: {}
+      }
+    }
+    
   }
   // ---------------------- PROCESS phase: determine the next sequence of actions -------------------------------
 
